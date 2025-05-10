@@ -1,1 +1,49 @@
+substitutions:
+  devicename: tuya-curtain 
+  upper_devicename: Tuya Curtain
+  location: 2 этаж
+  hardware: Looonas Curtain (ESP-07)
+  wifi_ip: !secret ip_tuya_curtain
 
+packages:
+  device_base: !include __device_base.yaml
+  
+external_components:
+  - source:
+      type: local
+      path: my_components     
+    components: [ tuya_curtain ]
+    refresh: 0s
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+
+esphome:
+  name: $devicename
+  project:
+    name: Brokly.LoonaS_ESP07
+    version: "Esp-07"
+  comment: $hardware. $location
+  area: $location
+
+#последовательный порт
+uart:
+  id: uart_bus
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 9600
+
+cover:
+  - platform: tuya_curtain
+    name: ${upper_devicename}
+    uart_id: uart_bus
+    product_id:   
+      name: ${upper_devicename} Product Identifier
+    protocol_debug_level: VERBOSE # публиковать лог протокола с указанным уровнем
+    restore_position:             # восстанавливать положение штор после перезагрузки 
+      save_timeout: 10s           # период сохранения состояния, для 8266 необходимо установить restore_from_flash: true
+      clibrate_timeout: 10s       # таймаут контроля зависания процедуры калибровки
+      silent: true                # тихая калибровка, срабатывает только если запросили промежуточную позицию при не калиброванном положении
+    refresh_position: 150ms       # публиковать рассчетную позицию положения, с указанным периодом
+    motor_reversed: false         # настройка реверса мотора
