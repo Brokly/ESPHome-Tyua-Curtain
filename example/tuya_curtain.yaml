@@ -1,7 +1,7 @@
 substitutions:
   devicename: tuya-curtain 
   upper_devicename: Tuya Curtain
-  location: 2 этаж
+  location: on window
   hardware: Looonas Curtain (ESP-07)
   wifi_ip: !secret ip_tuya_curtain
 
@@ -40,7 +40,7 @@ cover:
     uart_id: uart_bus
     product_id:   
       name: ${upper_devicename} Product Identifier
-    protocol_debug_level: VERBOSE # публиковать лог протокола с указанным уровнем
+    protocol_debug_level: VERBOSE # публиковать лог протокола обмена с указанным уровнем
     restore_position:             # восстанавливать положение штор после перезагрузки 
       save_timeout: 10s           # период сохранения состояния, для 8266 необходимо установить restore_from_flash: true
       clibrate_timeout: 10s       # таймаут контроля зависания процедуры калибровки
